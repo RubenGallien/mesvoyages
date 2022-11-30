@@ -1,0 +1,73 @@
+{% extends "basefront.html.twig" %}
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">
+                    Ville
+                    <a href="{{ path('voyages.sort', {champ:'ville', ordre:'ASC'}) }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('voyages.sort', {champ:'ville', ordre:'DESC'}) }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">></a>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('voyages.findallequal', {champ:'ville'}) }}">
+                        <div class="form-group mr-1 mb-2">
+                            <input type="text" class="sm" name="recherche">
+                            <input type="hidden" name="_token" value="{{ csrf_token('filtre_ville') }}">                            
+                            <button type="submit" class="btn btn-primary mb-2 btn-sm">filtrer</button>
+                        </div>
+                    </form>
+                </th>
+                <th class="text-left align-top" scope="col">
+                    Pays
+                    <a href="{{ path('voyages.sort', {champ:'pays', ordre:'ASC'}) }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('voyages.sort', {champ:'pays', ordre:'DESC'}) }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">></a>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('voyages.findallequal', {champ:'pays'}) }}">
+                        <div class="form-group mr-1 mb-2">
+                            <input type="text" class="sm" name="recherche">
+                            <input type="hidden" name="_token" value="{{ csrf_token('filtre_pays') }}">
+                            <button type="submit" class="btn btn-primary mb-2 btn-sm">filtrer</button>
+                        </div>
+                    </form>
+                </th>
+                <th class="text-end align-top" scope="col">
+                    Note
+                    <a href="{{ path('voyages.sort', {champ:'note', ordre:'ASC'}) }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('voyages.sort', {champ:'note', ordre:'DESC'}) }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">></a>
+                </th>
+                <th class="text-center align-top" scope="col">
+                    Date
+                    <a href="{{ path('voyages.sort', {champ:'datecreation', ordre:'ASC'}) }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('voyages.sort', {champ:'datecreation', ordre:'DESC'}) }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">></a>
+                </th>
+            </tr>
+        </thead>   
+        <tbody>
+            {% for visite in visites %}
+                <tr>
+                    <td>
+                        <h5 class="text-primary">
+                            <a href="{{ path('voyages.showone', {id:visite.id}) }}">{{ visite.ville }}</a>
+                        </h5>
+                    </td>
+                    <td>
+                        {{ visite.pays }}
+                    </td>
+                    <td class="text-end">
+                        <strong>
+                            {% if visite.note<10 %}
+                                <div class="text-danger">
+                                    {{ visite.note }}/20
+                                </div>
+                            {% else %}
+                                <div class="text-success">
+                                    {{ visite.note }}/20
+                                </div>
+                            {% endif %}
+                        </strong>
+                    </td>
+                    <td class="text-center">
+                        {{ visite.datecreationstring }}
+                    </td>  
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
